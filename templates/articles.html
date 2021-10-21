@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-6">
+        <h3>Articles</h3>        
+    </div>
+    <div class="col-lg-6">
+        <form class="form-inline" style="float: right;">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
+        </form> 
+    </div>
+</div>
+<hr>
+{% if articles  %}
+    {% for article in articles %}
+    <div class="row">
+        <div class="col-md-12">
+            <article>
+                 <header class="mb-4">
+                    <h1 class="fw-bolder mb-1">
+                        <a href="{% url 'article:detail' article.id %}">
+                            {{ article.title }}
+                        </a>
+                    </h1>
+                    <div class="text-muted fst-italic mb-2">{{ article.author.username }}, {{ article.createdDate }}</div>
+                </header>
+                 {% if article.articleImage  %}
+                 <a href="{% url 'article:detail' article.id %}"><figure class="mb-4"><img class="img-fluid rounded" src="{{ article.articleImage.url }}" alt="..."></figure></a>
+                 {% endif %}
+                <section class="mb-5">
+                    <p>
+                        {{ article.content | safe | truncatewords:25}}
+                    </p>
+                    <a href="{% url 'article:detail' article.id %}" class="btn btn-danger" style="float:right;">Read More..</a>
+                </section>
+                
+            </article>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-danger">There are no articles in this block.</div>
+{% endif %}
+{% endblock %}

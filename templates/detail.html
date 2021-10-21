@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <article>
+            <!-- Post header-->
+            <header class="mb-4">
+                <!-- Post title-->
+                <h1 class="fw-bolder mb-1">{{ article.title }}</h1>
+                <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">{{ article.author.username }}, {{ article.createdDate }}</div>
+                <!-- Post categories-->
+               
+            </header>
+             {% if article.articleImage  %}
+                 <figure class="mb-4"><img class="img-fluid rounded" src="{{ article.articleImage.url }}" alt="..."></figure>
+             {% endif %}
+           
+             
+            <section class="mb-5">
+                <p>
+                    {{ article.content | safe }}
+                </p>
+            </section>
+        </article>
+        <section class="mb-5">
+            <div class="card bg-light">
+                <div class="card-body"> 
+                    {% if comments  %}
+                        {% for comment in comments %}
+                            <div class="d-flex mb-4"> 
+                                <div class="flex-shrink-0" style="margin-right: 10px;"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div> 
+                                <div class="ms-3">
+                                    <div class="fw-bold"><strong>{{ comment.commentAuthor}}</strong></div>
+                                    {{ comment.commentDate}} <br>
+                                    {{ comment.commentContent}} 
+                                </div>
+                            </div> 
+                        {% endfor %}
+                 
+                    {% else %}
+                        <div class="alert alert-danger">No Comment!</div>
+                    {% endif %}
+                    <form class="mb-4" method="post" action="{% url 'article:comment' article.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="commentAuthor" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name="commentContent"  placeholder="Your Comment!"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Add Comment</button>
+                    </form> 
+                   
+                 
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

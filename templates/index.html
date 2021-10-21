@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="jumbotron text-center">
+    <h3>Welcome</h3>
+    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. </p>
+</div> 
+<p>
+
+    {% if request.user.is_authenticated %}
+        Welcome, {{request.user.username}}
+    {% else %}
+        <a href="{% url 'user:login' %}">Login</a>
+    {% endif %}
+</p>
+{% endblock %}
