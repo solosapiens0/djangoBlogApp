@@ -1,1 +1,2 @@
-"Django Blog App" 
+Admin Login: admin
+pass: 12345
